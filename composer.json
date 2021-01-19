@@ -1,0 +1,11 @@
+{
+    "name": "jonaspardon/cms",
+    "description": "CMS",
+    "authors": [
+        {
+            "name": "Jonas Pardon",
+            "email": "jonaspardon@hotmail.com"
+        }
+    ],
+    "require": {}
+}
