@@ -2,8 +2,9 @@
 
 namespace JonasPardon\Cms\Http\Controllers;
 
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Http\Resources\Json\ResourceCollection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use JonasPardon\Cms\Models\BaseModel;
 use JonasPardon\Cms\Repositories\EloquentRepository;
 use JonasPardon\Cms\Services\RepositoryFactory;
 
@@ -20,9 +21,10 @@ class ApiController
         $this->repositoryFactory = $repositoryFactory;
     }
 
-    private function setup(string $entity)
+    private function setup(string $entity): void
     {
         $this->entity = $entity;
+
         $this->repository = $this->repositoryFactory
             ->create($this->entity);
     }
@@ -40,11 +42,20 @@ class ApiController
 
     public function index(string $entity)
     {
-        return $this->repository->index();
+        $models = $this->repository->index();
+
+        return $this->buildResponse($models->first(), $models);
     }
 
-    public function show(string $entity, string $definer): JsonResource
+    public function show(string $entity, string $definer)
     {
+        $model = $this->repository->show($definer);
 
+        return $this->buildResponse($model);
+    }
+
+    private function buildResponse(BaseModel $model, ?Collection $models = null)
+    {
+        return $model->toResource($models ?? $model, isset($models));
     }
 }

@@ -18,15 +18,15 @@ abstract class ApiFactory
         }
 
         if (class_exists($guessed)) {
-            $result = app()->make($guessed);
-        } else {
-            try {
-                $entity = Str::studly($entity);
-                $result = app("{$entity}{$this->type}");
-            } catch (\Exception $e) {
-                $singular = Str::studly(Str::singular($entity));
-                $result = app("{$singular}{$this->type}");
-            }
+            return app()->make($guessed);
+        }
+
+        try {
+            $entity = Str::studly($entity);
+            $result = app("{$entity}{$this->type}");
+        } catch (\Exception $e) {
+            $singular = Str::studly(Str::singular($entity));
+            $result = app("{$singular}{$this->type}");
         }
 
         return $result;
