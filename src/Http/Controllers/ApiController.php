@@ -34,20 +34,20 @@ class ApiController
         $this->setup($entity);
 
         if (!is_null($definer)) {
-            return $this->show($entity, $definer);
+            return $this->show($definer);
         }
 
-        return $this->index($entity);
+        return $this->index();
     }
 
-    public function index(string $entity)
+    private function index()
     {
         $models = $this->repository->index();
 
         return $this->buildResponse($models->first(), $models);
     }
 
-    public function show(string $entity, string $definer)
+    private function show(string $definer)
     {
         $model = $this->repository->show($definer);
 
